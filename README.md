@@ -1,3 +1,5 @@
+> **Throwaway repository.** This repository exists only to produce teaching screenshots for ACS730. It is not course material, nothing here is graded, and it can be deleted at any time
+
 # ACS730 — Course Project Repository
 
 This is the template repository for ACS730 (Cloud Automation and Operational Security). At the start of the course, create your own repository from this template and do all of your work there.
