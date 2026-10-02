@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run unit tests on ${{ matrix.version }}
+        run: |
+          echo "Matrix cell ${{ matrix.version }}"
+          grep -qx OK ci/status.txt
+          echo "tests passed"
+
+  build:
+    name: build
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build artifact
+        run: |
+          mkdir -p out
+          echo built > out/app.txt
+          echo "build complete"
+
+  smoke:
+    name: smoke
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Smoke test
+        run: echo "smoke test ok"
+
+  summary:
+    name: summary
+    needs: [build, smoke]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Summarise
+        run: echo "all jobs green"
